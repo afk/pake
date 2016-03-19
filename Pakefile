@@ -1,0 +1,25 @@
+<?php
+
+task('make_mac_and_cheese', ['boil_water', 'buy_cheese', 'buy_pasta'], function() {
+	echo "Make Mac & Cheese\n";
+});
+
+task('boil_water', ['buy_cheese', 'buy_pasta'], function() {
+	echo "Boil Water\n";
+});
+
+task('buy_cheese', ['goto_store'], function() {
+	echo "Buy Cheese\n";
+});
+
+task('buy_pasta', ['goto_store'], function() {
+	echo "Buy Pasta\n";
+});
+
+task('goto_store', [], function() {
+	echo "Goto Store\n";
+});
+
+task('hello_world', [], function() {
+	echo "Hello World!\n";
+});

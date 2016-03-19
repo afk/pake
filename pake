@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+class Task {
+	private $name;
+	private $deps;
+	private $action;
+	private $ran = false;
+
+	public function __construct($name, $deps, $action) {
+		$this->name = $name;
+		$this->deps = $deps;
+		$this->action = $action;
+	}
+
+	public function __invoke() {
+		if ($this->ran) return;
+		global $tasks;
+		foreach ($this->deps as $dep) {
+			if ($dep != $this->name) call_user_func($tasks[$dep]);
+		}
+		call_user_func($this->action);
+		$this->ran = true;
+	}
+}
+
+$tasks = [];
+
+function task($name, $deps, $action) {
+	global $tasks;
+	$tasks[$name] = new Task($name, $deps, $action);
+}
+
+require_once __DIR__ . '/Pakefile';
+
+foreach (array_slice($argv, 1) as $task) {
+	if (isset($tasks[$task])) {
+		call_user_func($tasks[$task]);
+	}
+}
